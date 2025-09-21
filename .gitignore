@@ -1,0 +1,46 @@
+# Target directory (compiled binaries)
+/target/
+
+# Generated files by sqlx-cli
+/sqlx-data.json
+
+# Environment files (jangan sampai ke-commit!)
+/.env
+/.env.local
+/.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*~
+*.bak
+
+# Logs
+*.log
+
+# Database files (jika pakai SQLite)
+*.db
+*.sqlite
+*.sqlite3
+
+# Migrations (opsional — biasanya HARUS di-commit!)
+# Tapi jika kamu generate otomatis dan tidak ingin versi lama:
+# /migrations/*_temp_*.sql
+
+# Cargo lock file — biasanya HARUS di-commit, tapi jika kamu develop library:
+# /Cargo.lock
+
+# Executable files (Windows/Linux/Mac)
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Rust analyzer (opsional — bisa diabaikan)
+/rust-toolchain.toml
+/rustfmt.toml  # jika kamu ingin tim pakai formatter yang sama, jangan ignore ini
