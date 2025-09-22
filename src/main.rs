@@ -21,6 +21,7 @@ struct Todo {
 #[derive(Deserialize, Debug)]
 struct CreateTodo {
     title: String,
+    completed: Option<bool>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -45,10 +46,12 @@ async fn create_todo(
     State(pool): State<PgPool>,
     Json(payload): Json<CreateTodo>,
 ) -> Result<Json<Todo>, (axum::http::StatusCode, String)> {
+    let completed = payload.completed.unwrap_or(false);
     let todo = sqlx::query_as!(
         Todo,
-        "INSERT INTO todos (title) VALUES ($1) RETURNING id, title, completed, created_at",
-        payload.title
+        "INSERT INTO todos (title, completed) VALUES ($1, $2) RETURNING id, title, completed, created_at",
+        payload.title,
+        completed
     )
     .fetch_one(&pool)
     .await
@@ -83,7 +86,9 @@ async fn update_todo(
         Todo,
         r#"
         UPDATE todos
-        SET title = COALESCE($1, title), completed = COALESCE($2, completed)
+        SET 
+            title = COALESCE($1, title), 
+            completed = COALESCE($2, completed)
         WHERE id = $3
         RETURNING id, title, completed, created_at
         "#,
